@@ -162,8 +162,7 @@ function getPlayerMoves(){
     }
 }
 
-// Check for mouse collision on mousedown
-canvas.addEventListener('mousedown', (event) => {
+function handleTouch(){
     const collidedObject = checkMouseCollision(players, canvas);
     if (collidedObject && playerTurn.includes(collidedObject)) {
         console.log('Collision detected with:', collidedObject, 'At index ', collidedObject.index);
@@ -174,10 +173,9 @@ canvas.addEventListener('mousedown', (event) => {
         }
         movingPiece = collidedObject;
     }
-});
+}
 
-// Check for mouse moving
-canvas.addEventListener('mousemove', (event) => {
+function handleMove(){
     redraw()
     let cell = checkMouseCollision(board.grid, canvas);
     let piece = checkMouseCollision(players, canvas);
@@ -201,13 +199,36 @@ canvas.addEventListener('mousemove', (event) => {
         redraw();
         tempCell = checkMouseCollision(board.grid, canvas);
     }
+}
+
+// Check for mouse collision on mousedown
+canvas.addEventListener('mousedown', (event) => {
+    handleTouch()
 });
+
+canvas.addEventListener('touchstart', (event) => {
+    handleTouch()
+});
+
+// Check for mouse moving
+canvas.addEventListener('mousemove', (event) => {
+    handleMove()
+});
+
+canvas.addEventListener('touchmove', (event) => {
+    handleMove()
+});
+
 
 // check for mouse button up
 canvas.addEventListener('mouseup', (event) => {
     movePiece()
     getPlayerMoves()
+});
 
+canvas.addEventListener('touchend', (event) => {
+    movePiece()
+    getPlayerMoves()
 });
 
 // Initial draw
