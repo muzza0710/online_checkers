@@ -59,9 +59,12 @@ function checkMouseCollision(group, canvas) {
 }
 
 // Function to get mouse position relative to canvas
-function getMousePos(event) { 
-    const rect = canvas.getBoundingClientRect(); 
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+function getCanvasCoordinates(event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: event.pageX - rect.left,
+        y: event.pageY - rect.top,
+    };
 }
 
 // Function to clear and redraw the canvas
@@ -187,7 +190,7 @@ function handleMove(){
         cell.highlight(context)
     }
     if (movingPiece) {
-        const mousePos = getMousePos(event);
+        const mousePos = getCanvasCoordinates(event);
         movingPiece.dragPos = {
             x: mousePos.x -  movingPiece.size / 2,
             y: mousePos.y -  movingPiece.size / 2
@@ -202,31 +205,17 @@ function handleMove(){
 }
 
 // Check for mouse collision on mousedown
-canvas.addEventListener('mousedown', (event) => {
-    handleTouch()
-});
-
-canvas.addEventListener('touchstart', (event) => {
+canvas.addEventListener('pointerdown', (event) => {
     handleTouch()
 });
 
 // Check for mouse moving
-canvas.addEventListener('mousemove', (event) => {
+canvas.addEventListener('pointermove', (event) => {
     handleMove()
 });
-
-canvas.addEventListener('touchmove', (event) => {
-    handleMove()
-});
-
 
 // check for mouse button up
-canvas.addEventListener('mouseup', (event) => {
-    movePiece()
-    getPlayerMoves()
-});
-
-canvas.addEventListener('touchend', (event) => {
+canvas.addEventListener('pointerup', (event) => {
     movePiece()
     getPlayerMoves()
 });
